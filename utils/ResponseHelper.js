@@ -18,7 +18,7 @@ module.exports = class ResponseHelper {
     }
 
     putData(key, value) {
-        this.response.data.key = value;
+        this.response.data[key] = value;
     }
 
     removeData(key) {
