@@ -1,2 +1,26 @@
 GET http://localhost:3000/
 Authorization: 5550049443b74107469df312b45d3a984a38da5ed38e0fc1b9b2899048796ce1d791adb96f22cf7ac746589548f0a3da7a42ec82e4e54bc3ebd25c55a5fea6a3
+
+####
+
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "abolfazlalz",
+    "password": "ParisaAnd729",
+    "token": "5550049443b74107469df312b45d3a984a38da5ed38e0fc1b9b2899048796ce1d791adb96f22cf7ac746589548f0a3da7a42ec82e4e54bc3ebd25c55a5fea6a3"
+}
+
+####
+
+POST http://localhost:3000/signup
+Content-Type: application/json
+
+{
+    "username": "abolfazlalz",
+    "password": "ParisaAnd729",
+    "email": "mrabolfazlalz@gmail.com",
+    "firstname": "Abolfazl",
+    "lastname": "Alizadeh"
+}
