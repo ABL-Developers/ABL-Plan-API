@@ -6,9 +6,9 @@ const MongoClient = require('mongodb').MongoClient
 const CryptographyHelper = require('../utils/CryptographyHelper')
 
 
-const uri = `mongodb+srv://abolfazlalz:${process.env.DB_PASSWORD}@cluster0.homvc.mongodb.net/accounts?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://abolfazlalz:${process.env.DB_PASSWORD}@cluster0.homvc.mongodb.net/accounts?retryWrites=true&w=majority`
 
-const client = new MongoClient(uri, { useNewUrlParser: true });
+const client = new MongoClient(uri, { useNewUrlParser: true })
 
 module.exports = class RegisterControl {
 
@@ -16,30 +16,39 @@ module.exports = class RegisterControl {
         this.listener = new EventEmitter()
     }
 
-    signup(data, callback, error) {
-        const listener = new EventEmitter()
+    getListener() {
+        return this.listener
+    }
+
+    login(username, password, callback, error) {
+
+    }
+
+    signup(data) {
+        console.log(data);
 
         client.connect(err => {
-            const collection = client.db("accounts").collection("users");
-            collection.insertOne({
-                name: data.firstname,
-                lastname: data.lastname,
-                username: data.username,
-                password: CryptographyHelper.getCryptoPassword(data.password),
-                email: data.email,
-                dateCreated: new Date().toString()
-            }, callbackResult => {
-                if (callbackResult != undefined && callbackResult.hasErrorLabel && error != undefined) {
-                    error(callbackResult.errmsg)
-                } else if (callback != undefined) {
-                    callback('')
-                }
-            });
+            const collection = client.db("accounts").collection("users")
+            try {
+                collection.insertOne({
+                    name: data.firstname,
+                    lastname: data.lastname,
+                    username: data.username,
+                    password: CryptographyHelper.getCryptoPassword(data.password),
+                    email: data.email,
+                    dateCreated: new Date()
+                }, callbackResult => {
+                    if (callbackResult != undefined && callbackResult.hasErrorLabel)
+                        this.listener.emit("signup-error")
+                    else
+                        this.listener.emit("signup-success")
+                })
+            } catch (exception) {
+                this.listener.emit("signup-error")
+            }
 
-            client.close();
-        });
-
-        return listener;
+            client.close()
+        })
     }
 
 

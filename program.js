@@ -11,28 +11,20 @@ app.use(express.json())
 
 app.get('/', (req, res) => {
     let response = new ResponseHelper()
-    const token = req.headers['authorization']
-    let auth = process.env.ACCESS_TOKEN_SECRET
-    if (token != auth) {
-        res.sendStatus(403)
-    }
     res.send(response.getResponse())
 })
 
 app.post('/login/', (req, res) => {
     let response = new ResponseHelper()
     let username = req.body.username
-    let password = req.body.password
-
-    if (!checkAuth(req.body.token, res))
-        return
+    let password = req.body.passwords
 
     let register = new RegisterHelper()
     register.signin(username, password, req.connection.remoteAddress)
     res.send(response.getResponse())
 })
 
-app.post('/signup', (req, res) => {
+app.post('/signup', authenticateToken, (req, res) => {
     let response = new ResponseHelper()
     let register = new RegisterHelper()
     let data = {
@@ -42,28 +34,27 @@ app.post('/signup', (req, res) => {
         firstname: req.body.firstname,
         lastname: req.body.lastname
     }
-    register.signup(data, (success) => {
+
+    register.signup(data)
+
+    register.getListener().on('signup-success', () => {
         response.setStatus(true)
         response.putData("msg", "your account successfully has created")
         res.json(response.getResponse())
-    }, (error) => {
+    })
+
+    register.getListener().on('signup-error', () => {
         response.putData('msg', error)
         res.json(response.getResponse())
-    });
+    })
 })
 
-function checkAuth(token, res) {
-    let response = new ResponseHelper()
-
-    let auth = process.env.ACCESS_TOKEN_SECRET
-    if (token != auth) {
-        console.log('invalid auth')
-        res.sendStatus(403)
-        response.putData('msg', 'invalid token')
-        res.json(response.getResponse())
-        return false
-    }
-    return true
+function authenticateToken(req, res, next) {
+    const token = req.body.authorizations
+    if (token == null) return res.sendStatus(401)
+    if (token != process.env.ACCESS_TOKEN_SECRET)
+        return res.sendStatus(403)
+    next()
 }
 
 app.listen(port, () => {
