@@ -23,11 +23,11 @@ app.post('/login', (req, res) => {
 
     let register = new RegisterHelper()
     register.login(username, password,
-        (result) => {
-            response.setStatus(result)
-            if (result != false) {
-                const accessToken = generateAccessToken(result)
-                const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+        (user) => {
+            if (user != false) {
+                response.setStatus(true)
+                const accessToken = generateAccessToken(user)
+                const refreshToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
                 refreshTokens.push(refreshToken)
                 response.putData("refresh-token", refreshToken)
                 response.putData("access-token", accessToken)
