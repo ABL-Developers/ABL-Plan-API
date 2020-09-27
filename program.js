@@ -16,6 +16,10 @@ app.get('/', (req, res) => {
     res.send(response.getResponse())
 })
 
+app.post('/info', checkAuthToken, (req, res) => {
+    res.json(req.user);
+})
+
 app.post('/login', (req, res) => {
     let response = new ResponseHelper()
     let username = req.body.username
@@ -74,7 +78,19 @@ function authenticateToken(req, res, next) {
 }
 
 function generateAccessToken(user) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '365d' })
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
+}
+
+function checkAuthToken(req, res, next) {
+    const refreshToken = req.body.token
+    console.log(refreshTokens);
+    if (refreshToken == null) return res.sendStatus(401)
+    if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
+    jwt.verify(refreshToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403)
+        req.user = user;
+        next()
+    })
 }
 
 app.listen(port, () => {

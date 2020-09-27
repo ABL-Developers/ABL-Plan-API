@@ -50,3 +50,11 @@ Content-Type: application/json
     "password": "ParisaAnd729"
 }
 
+### 
+
+POST http://localhost:3000/info
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjcwM2Y5ODc5MDMzYjUzYzhkMDQxNzUiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjdUMDc6MzA6MzIuMzAwWiIsImlhdCI6MTYwMTIyMjk2Nn0.wxyGpbvNrZB93vnHKZj27HiDRyrYvZl21Yv6Zu4NUUE"
+}
