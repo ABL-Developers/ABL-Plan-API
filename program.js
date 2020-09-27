@@ -9,19 +9,34 @@ const port = 3000
 
 app.use(express.json())
 
+let refreshTokens = []
+
 app.get('/', (req, res) => {
     let response = new ResponseHelper()
     res.send(response.getResponse())
 })
 
-app.post('/login/', (req, res) => {
+app.post('/login', (req, res) => {
     let response = new ResponseHelper()
     let username = req.body.username
-    let password = req.body.passwords
+    let password = req.body.password
 
     let register = new RegisterHelper()
-    register.signin(username, password, req.connection.remoteAddress)
-    res.send(response.getResponse())
+    register.login(username, password,
+        (result) => {
+            response.setStatus(result)
+            if (result != false) {
+                const accessToken = generateAccessToken(result)
+                const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+                refreshTokens.push(refreshToken)
+                response.putData("refresh-token", refreshToken)
+                response.putData("access-token", accessToken)
+            }
+            res.send(response.getResponse())
+        }, (err) => {
+            response.putData("error", err)
+            res.send(response.getResponse())
+        })
 })
 
 app.post('/signup', authenticateToken, (req, res) => {
@@ -51,10 +66,15 @@ app.post('/signup', authenticateToken, (req, res) => {
 
 function authenticateToken(req, res, next) {
     const token = req.body.authorizations
+    console.log(req.body)
     if (token == null) return res.sendStatus(401)
     if (token != process.env.ACCESS_TOKEN_SECRET)
         return res.sendStatus(403)
     next()
+}
+
+function generateAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '365d' })
 }
 
 app.listen(port, () => {
