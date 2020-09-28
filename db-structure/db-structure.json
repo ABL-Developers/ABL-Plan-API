@@ -1,0 +1,21 @@
+{
+    "title": "Plan Title",
+    "description": "Plan Description",
+    "dates": {
+        "created": "{DATE}",
+        "deadline": "{DATE}",
+        "lastChange": "{DATE}"
+    },
+    "users": {
+        "5": [
+            "creator"
+        ],
+        "4": [
+            "user",
+            "programmer"
+        ],
+        "3": [
+            "user"
+        ]
+    }
+}
