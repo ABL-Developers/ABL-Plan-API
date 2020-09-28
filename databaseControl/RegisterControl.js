@@ -1,6 +1,5 @@
 require('dotenv').config()
 
-const axios = require('axios')
 const EventEmitter = require('events').EventEmitter
 const MongoClient = require('mongodb').MongoClient
 const CryptographyHelper = require('../utils/CryptographyHelper')
