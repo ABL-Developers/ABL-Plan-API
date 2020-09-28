@@ -58,3 +58,17 @@ Content-Type: application/json
 {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjcwM2Y5ODc5MDMzYjUzYzhkMDQxNzUiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjdUMDc6MzA6MzIuMzAwWiIsImlhdCI6MTYwMTIyMjk2Nn0.wxyGpbvNrZB93vnHKZj27HiDRyrYvZl21Yv6Zu4NUUE"
 }
+
+
+###
+
+POST http://localhost:3000/plan/add
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjcwM2Y5ODc5MDMzYjUzYzhkMDQxNzUiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjdUMDc6MzA6MzIuMzAwWiIsImlhdCI6MTYwMTI3NjM4N30.nIcAV9Lai0D8KEgj56orGFN_ye6P7GoC02Pd_G0DnoI",
+    "title": "New Title",
+    "description": "Just a test plan !",
+    "createdDate": "1399/07/07",
+    "deadlineDate": "1399/07/07"
+}

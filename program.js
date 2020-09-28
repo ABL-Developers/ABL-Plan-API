@@ -4,6 +4,8 @@ const express = require('express')
 const ResponseHelper = require('./utils/ResponseHelper')
 const jwt = require('jsonwebtoken')
 const RegisterHelper = require('./databaseControl/RegisterControl')
+const PlansControl = require('./databaseControl/PlansControl')
+const { response } = require('express')
 const app = express()
 const port = 3000
 
@@ -17,7 +19,39 @@ app.get('/', (req, res) => {
 })
 
 app.post('/info', checkAuthToken, (req, res) => {
-    res.json(req.user);
+    res.json(req.user)
+})
+
+app.post('/plan/add', checkAuthToken, (req, res) => {
+    const needleParams = ['title', 'description', 'createdDate']
+    let uid = req.user._id
+    if (!checkParameters(req.body, needleParams)) {
+        res.send(400)
+        return
+    }
+    if (uid == undefined) {
+        res.sendStatus(403)
+        return
+    }
+
+    const data = {
+        title: req.body.title,
+        description: req.body.description,
+        createdDate: req.body.createdDate,
+        deadlineDate: req.body.deadlineDate,
+    }
+
+    let responseHelper = new ResponseHelper()
+    let planControl = new PlansControl()
+    planControl.getListener().on('insert-success', () => {
+        responseHelper.setStatus(true)
+        res.json(responseHelper.getResponse())
+    })
+    planControl.getListener().on('insert-error', () => {
+        res.json(responseHelper.getResponse())
+    })
+
+    planControl.createNewPlan(data, uid)
 })
 
 app.post('/login', (req, res) => {
@@ -70,7 +104,6 @@ app.post('/signup', authenticateToken, (req, res) => {
 
 function authenticateToken(req, res, next) {
     const token = req.body.authorizations
-    console.log(req.body)
     if (token == null) return res.sendStatus(401)
     if (token != process.env.ACCESS_TOKEN_SECRET)
         return res.sendStatus(403)
@@ -83,14 +116,22 @@ function generateAccessToken(user) {
 
 function checkAuthToken(req, res, next) {
     const refreshToken = req.body.token
-    console.log(refreshTokens);
     if (refreshToken == null) return res.sendStatus(401)
     if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
     jwt.verify(refreshToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if (err) return res.sendStatus(403)
-        req.user = user;
+        req.user = user
         next()
     })
+}
+
+function checkParameters(requests, needleParameters) {
+    needleParameters.forEach(parameter => {
+        if (!(parameter in requests)) {
+            return false
+        }
+    })
+    return true
 }
 
 app.listen(port, () => {

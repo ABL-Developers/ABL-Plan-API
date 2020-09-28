@@ -26,7 +26,6 @@ module.exports = class RegisterControl {
                 'password': CryptographyHelper.getCryptoPassword(password)
             }
             collection.find(condition).toArray(function (err, result) {
-                console.log(result);
                 if (err) {
                     error(err)
                 }

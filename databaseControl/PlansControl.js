@@ -20,16 +20,16 @@ module.exports = class PlansControl {
     createNewPlan(data, userId) {
         let createdDate = data.createdDate
         let deadlineDate = createdDate
-        if (data.deadlineDate == undefined)
+        if (data.deadlineDate != undefined)
             deadlineDate = data.deadlineDate
 
         let planData = {
             'title': data.title,
             'description': data.description,
             'dates': {
-                'created': date.createdDate,
+                'created': data.createdDate,
                 'deadline': deadlineDate,
-                'modified': date.createdDate
+                'modified': data.createdDate
             },
             "users": {
                 [userId]: ['creator']
@@ -41,12 +41,12 @@ module.exports = class PlansControl {
                 this.listener.emit('insert-error')
                 return
             }
-            const collection = this.client.db("plans").collection("plans");
+            const collection = this.client.db("plans").collection("plans")
             collection.insertOne(planData, callback => {
                 if (callback != undefined && callback.hasErrorLabel)
                     this.listener.emit("insert-error")
                 else
-                    this.listener.emit("insrt-success")
+                    this.listener.emit("insert-success")
             }, error => {
                 this.listener.emit("insert-error")
             })
