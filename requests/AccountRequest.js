@@ -25,11 +25,9 @@ module.exports = class AccountRequest extends RequestsHelper {
             (user) => {
                 if (user != false) {
                     response.setStatus(true)
-                    const accessToken = AccountRequest.generateAccessToken(user)
                     const refreshToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
                     refreshTokens.push(refreshToken)
                     response.putData("refresh-token", refreshToken)
-                    response.putData("access-token", accessToken)
                 }
                 res.send(response.getResponse())
             }, (err) => {
