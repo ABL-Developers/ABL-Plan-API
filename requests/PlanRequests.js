@@ -1,11 +1,13 @@
 const RequestsHelper = require('./RequestsHelper')
 const ResponseHelper = require('../utils/ResponseHelper')
 const PlansControl = require('../databaseControl/PlansControl')
+const AccountRequest = require('../requests/AccountRequest')
 
 module.exports = class PlanRequests extends RequestsHelper {
-  constructor() {
-    super();
+  static startRequestsListener(app) {
+    app.post('/plan/add', AccountRequest.checkAuthToken, PlanRequests.addNewPlan)
   }
+
   static addNewPlan(req, res) {
     const needleParams = ["title", "description", "createdDate"];
     let uid = req.user._id;

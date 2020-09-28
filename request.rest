@@ -53,7 +53,7 @@ POST http://localhost:3000/plan/add
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjcxYWVhMTU1NmFiMTY2ZTA3ZjAwZjUiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjhUMDk6MzY6MzMuMTQzWiIsImlhdCI6MTYwMTMxNjIzN30.h0ZuZJlLuSTs2rj9xVGEDjFLPeMkrzyYakGYJJgtRb4",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjcxYWVhMTU1NmFiMTY2ZTA3ZjAwZjUiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjhUMDk6MzY6MzMuMTQzWiIsImlhdCI6MTYwMTMxNzYzNn0.94f8NyIZjWp2YIiRxBl0axSmGMcw0kI35xaAtOmb7lY",
     "title": "New Title Ok",
     "description": "Just a test plan !",
     "createdDate": "1399/07/07",

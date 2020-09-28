@@ -2,11 +2,18 @@ require('dotenv').config()
 
 const ResponseHelper = require('../utils/ResponseHelper')
 const RegisterHelper = require('../databaseControl/RegisterControl')
+const RequestsHelper = require('./RequestsHelper')
+const AuthenticatorRequest = require('../requests/AuthenticatorRequest')
 const jwt = require('jsonwebtoken')
 
 let refreshTokens = []
 
-module.exports = class AccountRequest {
+module.exports = class AccountRequest extends RequestsHelper {
+
+    static startRequestsListener(app) {
+        app.post('/login', AuthenticatorRequest.authenticateToken, AccountRequest.login)
+        app.post('/signup', AuthenticatorRequest.authenticateToken, AccountRequest.createAccount)
+    }
 
     static login(req, res) {
         let response = new ResponseHelper()
