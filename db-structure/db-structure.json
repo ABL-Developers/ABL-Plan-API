@@ -4,7 +4,7 @@
     "dates": {
         "created": "{DATE}",
         "deadline": "{DATE}",
-        "lastChange": "{DATE}"
+        "modified": "{DATE}"
     },
     "users": {
         "5": [
