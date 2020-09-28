@@ -32,7 +32,7 @@ module.exports = class PlansControl {
                 'modified': data.createdDate
             },
             "users": {
-                [userId]: ['creator']
+                ['user' + userId]: ['creator']
             }
         }
 
@@ -53,5 +53,24 @@ module.exports = class PlansControl {
             this.client.close()
         })
 
+    }
+
+    getPlans(uid, limit = 10, skip = 0) {
+
+        this.client.connect(err => {
+            if (err) {
+                this.listener.emit('get-plans-error', err)
+                return
+            }
+            const collection = this.client.db("plans").collection("plans")
+            collection.find({ ['users.user' + uid]: { $exists: true } }).limit(limit).skip(skip).toArray((err, result) => {
+                if (err) {
+                    this.listener.emit('get-plans-error', err)
+                    return
+                }
+                this.listener.emit('get-plans', result)
+            })
+            this.client.close()
+        })
     }
 }
