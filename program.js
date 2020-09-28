@@ -2,7 +2,6 @@ require('dotenv').config()
 
 const express = require('express')
 const ResponseHelper = require('./utils/ResponseHelper')
-const PlansControl = require('./databaseControl/PlansControl')
 const AccountRequest = require('./requests/AccountRequest')
 const PlanRequests = require('./requests/PlanRequests')
 const app = express()
@@ -18,8 +17,6 @@ app.get('/', (req, res) => {
 app.post('/info', AccountRequest.checkAuthToken, (req, res) => {
   res.json(req.user)
 })
-
-new PlansControl().getPlans('5f71aea1556ab166e07f00f5')
 
 PlanRequests.startRequestsListener(app)
 AccountRequest.startRequestsListener(app)
