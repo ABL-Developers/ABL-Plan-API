@@ -18,19 +18,6 @@ POST http://localhost:3000/signup
 Content-Type: application/json
 
 {
-    "username": "abolfazlalz",
-    "password": "ParisaAnd729",
-    "email": "mrabolfazlalz@gmail.com",
-    "firstname": "Abolfazl",
-    "lastname": "Alizadeh"
-}
-
-####
-
-POST http://localhost:3000/signup
-Content-Type: application/json
-
-{
     "authorizations": "5550049443b74107469df312b45d3a984a38da5ed38e0fc1b9b2899048796ce1d791adb96f22cf7ac746589548f0a3da7a42ec82e4e54bc3ebd25c55a5fea6a3",
     "username": "abolfazlalz",
     "password": "ParisaAnd729",
@@ -66,8 +53,8 @@ POST http://localhost:3000/plan/add
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjcwM2Y5ODc5MDMzYjUzYzhkMDQxNzUiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjdUMDc6MzA6MzIuMzAwWiIsImlhdCI6MTYwMTI3NjM4N30.nIcAV9Lai0D8KEgj56orGFN_ye6P7GoC02Pd_G0DnoI",
-    "title": "New Title",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjcxYWVhMTU1NmFiMTY2ZTA3ZjAwZjUiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjhUMDk6MzY6MzMuMTQzWiIsImlhdCI6MTYwMTMxNjIzN30.h0ZuZJlLuSTs2rj9xVGEDjFLPeMkrzyYakGYJJgtRb4",
+    "title": "New Title Ok",
     "description": "Just a test plan !",
     "createdDate": "1399/07/07",
     "deadlineDate": "1399/07/07"
