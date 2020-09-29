@@ -1,4 +1,10 @@
+const express = require('express')
+
 module.exports = class RequestsHelper {
+  /**
+   * 
+   * @param {express.Express} app Express app for handle requests
+   */
   static startRequestsListener(app) {
     console.log('not defiened')
   }

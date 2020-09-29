@@ -58,3 +58,8 @@ Content-Type: application/json
 
 GET http://localhost:3000/plan/get/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjcxYWVhMTU1NmFiMTY2ZTA3ZjAwZjUiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjhUMDk6MzY6MzMuMTQzWiIsImlhdCI6MTYwMTMyMTIyN30.6X7ruMFIwrdQ-u7MT3mtg1zGq9CE1v7tiqFDaWrWzzw
 Content-Type: application/json
+
+###
+
+GET http://localhost:3000/accounts/taken/username/abolfazlalz
+Content-Type: application/json

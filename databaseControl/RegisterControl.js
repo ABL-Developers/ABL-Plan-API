@@ -7,7 +7,6 @@ const AccountControl = require('./AccountsControl')
 const DatabaseHelper = require('./DatabaseHelper')
 
 
-const uri = `mongodb+srv://abolfazlalz:${process.env.DB_PASSWORD}@cluster0.homvc.mongodb.net/accounts?retryWrites=true&w=majority`
 const
     SIGNUP_ERROR = 'signup-error',
     LOGIN_ERROR = 'login-error'
