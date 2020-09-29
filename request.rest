@@ -1,18 +1,7 @@
 GET http://localhost:3000/
 Authorization: 5550049443b74107469df312b45d3a984a38da5ed38e0fc1b9b2899048796ce1d791adb96f22cf7ac746589548f0a3da7a42ec82e4e54bc3ebd25c55a5fea6a3
 
-####
-
-POST http://localhost:3000/login
-Content-Type: application/json
-
-{
-    "username": "abolfazlalz",
-    "password": "ParisaAnd729",
-    "token": "5550049443b74107469df312b45d3a984a38da5ed38e0fc1b9b2899048796ce1d791adb96f22cf7ac746589548f0a3da7a42ec82e4e54bc3ebd25c55a5fea6a3"
-}
-
-####
+###
 
 POST http://localhost:3000/signup
 Content-Type: application/json
@@ -47,17 +36,17 @@ Content-Type: application/json
 }
 
 
-###
+###2020-09-29 8:18
 
 POST http://localhost:3000/plan/add
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjcxYWVhMTU1NmFiMTY2ZTA3ZjAwZjUiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjhUMDk6MzY6MzMuMTQzWiIsImlhdCI6MTYwMTMxOTkwOH0.NhChl-ID1TuQ429GKu_GgnFLnpcULXlVQYU_fKiT_YQ",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjcxYWVhMTU1NmFiMTY2ZTA3ZjAwZjUiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjhUMDk6MzY6MzMuMTQzWiIsImlhdCI6MTYwMTM2MjA0OH0.2_94sbyOmcN1rXmNh9P88BL-j05WeCL6liaMEbET7XE",
     "title": "New Title Ok",
     "description": "Just a test plan !",
-    "createdDate": "1399/07/07",
-    "deadlineDate": "1399/07/07"
+    "createdDate": "2020-09-29 08:18",
+    "deadlineDate": "2020-09-29 08:18"
 }
 
 ###

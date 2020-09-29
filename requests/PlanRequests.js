@@ -34,7 +34,8 @@ module.exports = class PlanRequests extends RequestsHelper {
       responseHelper.setStatus(true);
       res.json(responseHelper.getResponse());
     });
-    planControl.getListener().on("insert-error", () => {
+    planControl.getListener().on("insert-error", (error) => {
+      responseHelper.putData('msg', error)
       res.json(responseHelper.getResponse());
     });
 
