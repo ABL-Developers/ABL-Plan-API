@@ -2,8 +2,9 @@ require('dotenv').config()
 
 const express = require('express')
 const ResponseHelper = require('./utils/ResponseHelper')
-const AccountRequest = require('./requests/AccountRequest')
+const RegisterRequests = require('./requests/RegisterRequests')
 const PlanRequests = require('./requests/PlanRequests')
+
 const app = express()
 const port = 3000
 
@@ -14,12 +15,13 @@ app.get('/', (req, res) => {
   res.send(response.getResponse())
 })
 
-app.post('/info', AccountRequest.checkAuthToken, (req, res) => {
+app.post('/info', RegisterRequests.checkAuthToken, (req, res) => {
   res.json(req.user)
 })
 
 PlanRequests.startRequestsListener(app)
-AccountRequest.startRequestsListener(app)
+RegisterRequests.startRequestsListener(app)
+
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`)

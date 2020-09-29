@@ -1,12 +1,12 @@
 const RequestsHelper = require('./RequestsHelper')
 const ResponseHelper = require('../utils/ResponseHelper')
 const PlansControl = require('../databaseControl/PlansControl')
-const AccountRequest = require('../requests/AccountRequest')
+const RegisterRequests = require('./RegisterRequests')
 
 module.exports = class PlanRequests extends RequestsHelper {
   static startRequestsListener(app) {
-    app.post('/plan/add', AccountRequest.checkAuthToken, PlanRequests.addNewPlan)
-    app.get('/plan/get/:refreshToken', AccountRequest.checkAuthTokenParameter, PlanRequests.getPlans)
+    app.post('/plan/add', RegisterRequests.checkAuthToken, PlanRequests.addNewPlan)
+    app.get('/plan/get/:refreshToken', RegisterRequests.checkAuthTokenParameter, PlanRequests.getPlans)
   }
 
   static addNewPlan(req, res) {
