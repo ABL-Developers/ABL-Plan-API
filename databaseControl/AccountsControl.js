@@ -11,24 +11,28 @@ const USER_VALIDATION = 1
 module.exports = class AccountsControl extends DatabaseHelper {
 
     constructor() {
-        super()
+        super('accounts')
     }
 
     static get USER_VALIDATION() {
         return USER_VALIDATION
     }
 
-    isUserIdValid(userId) {
-        this.client.connect(err => {
-            const collection = this.client.db("accounts").collection("users")
-            var o_id = new mongo.ObjectID(userId)
-            const filter = { '_id': o_id }
-            collection.findOne(filter, (err, callback) => {
-                const result = Object.keys(callback).length > 0
-                this.getListener().emit(AccountsControl.USER_VALIDATION, result)
-            })
-            this.client.close()
-        })
+    static newInstance() {
+        return new AccountsControl()
     }
 
+    isUserIdValid(userId, callback, error = undefined) {
+        var o_id = new mongo.ObjectID(userId)
+        const filter = { '_id': o_id }
+        this.checkDataExists(filter, 'users', callback, error)
+    }
+
+    isUsernameExists(username, callback, error = undefined) {
+        this.checkDataExists({ 'username': username }, 'users', callback, error)
+    }
+
+    isEmailExists(email, callback, error = undefined) {
+        this.checkDataExists({ 'email': email }, 'users', callback, error)
+    }
 }

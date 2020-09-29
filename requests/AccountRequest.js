@@ -55,7 +55,7 @@ module.exports = class AccountRequest extends RequestsHelper {
             res.json(response.getResponse())
         })
 
-        register.getListener().on('signup-error', () => {
+        register.getListener().on('signup-error', (error) => {
             response.putData('msg', error)
             res.json(response.getResponse())
         })

@@ -16,6 +16,10 @@ module.exports = class DatabaseHelper {
         return this.listener
     }
 
+    get Client() {
+        return this.client
+    }
+
     find(filter, collectionName, callback, error = undefined) {
         this.client.connect(err => {
             if (err) {
@@ -43,6 +47,13 @@ module.exports = class DatabaseHelper {
         })
     }
 
+    /**
+     * check a value is Exists or not
+     * @param {Array} filter 
+     * @param {String} collectionName 
+     * @param {Function} callback 
+     * @param {Function} error 
+     */
     checkDataExists(filter, collectionName, callback, error) {
         this.client.connect(err => {
             if (err) {
@@ -56,8 +67,8 @@ module.exports = class DatabaseHelper {
                         else
                             throw err
                     } else {
-                        const isExists = Object.keys(result).length > 0
-                        if (this.isVariableFunction(variable))
+                        const isExists = result != undefined
+                        if (this.isVariableFunction(callback))
                             callback(isExists)
                         else if (this.isVariableFunction(error))
                             error('callback must declared')
