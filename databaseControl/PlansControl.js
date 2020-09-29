@@ -1,21 +1,18 @@
 require('dotenv').config()
 
 const EventEmitter = require('events').EventEmitter
-const MongoClient = require('mongodb').MongoClient
+const mongo = require('mongodb')
+const MongoClient = mongo.MongoClient
 const moment = require('moment')
 const AccountsControl = require('./AccountsControl')
+const DatabaseHelper = require('./DatabaseHelper')
 
 const uri = `mongodb+srv://abolfazlalz:${process.env.DB_PASSWORD}@cluster0.homvc.mongodb.net/plans?retryWrites=true&w=majority`
 
-module.exports = class PlansControl {
+module.exports = class PlansControl extends DatabaseHelper {
 
     constructor() {
-        this.listener = new EventEmitter()
-        this.client = new MongoClient(uri, { useNewUrlParser: true })
-    }
-
-    getListener() {
-        return this.listener
+        super('plans')
     }
 
     createNewPlan(data, userId) {
@@ -103,5 +100,21 @@ module.exports = class PlansControl {
             })
             this.client.close()
         })
+    }
+
+    updateCollection(filter, data, collectionName, callback, error) {
+        data['dates']['modified'] = moment().format('YY-MM-DD HH-mm')
+        this.updateCollection(filter, data, collectionName, callback, error)
+    }
+
+    updateOneCollection(filter, data, collectionName, callback, error) {
+        data['dates']['modified'] = moment().format('YY-MM-DD HH-mm')
+        this.updateCollection(filter, data, collectionName, callback, error)
+    }
+
+    updatePlan(planId, dataToUpdate, callback, error) {
+        var o_id = new mongo.ObjectID(planId)
+        const filter = { '_id': o_id }
+        this.updateOneCollection(filter, dataToUpdate, 'plans', callback, error)
     }
 }

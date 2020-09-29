@@ -5,6 +5,7 @@ const mongo = require('mongodb')
 const MongoClient = mongo.MongoClient
 
 const DatabaseHelper = require('./DatabaseHelper')
+const moment = require('moment')
 
 const USER_VALIDATION = 1
 
@@ -34,5 +35,15 @@ module.exports = class AccountsControl extends DatabaseHelper {
 
     isEmailExists(email, callback, error = undefined) {
         this.checkDataExists({ 'email': email }, 'users', callback, error)
+    }
+
+    updateCollection(filter, data, collectionName, callback, error) {
+        data['modified'] = moment().format('YY-MM-DD HH-mm')
+        super.updateCollection(filter, data, collectionName, callback, error)
+    }
+
+    updateOneCollection(filter, data, collectionName, callback, error) {
+        data['date']['modified'] = moment().format('YY-MM-DD HH-mm')
+        super.updateOneCollection(filter, data, collectionName, callback, error)
     }
 }

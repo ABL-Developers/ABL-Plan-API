@@ -42,8 +42,8 @@ module.exports = class DatabaseHelper {
                         error('callback must declared')
                     }
                 })
+                this.client.close()
             }
-            this.client.close()
         })
     }
 
@@ -59,7 +59,8 @@ module.exports = class DatabaseHelper {
             if (err) {
                 error(err)
             } else {
-                const collection = this.client.db(this.db_name).collection(collectionName)
+                const db = this.client.db(this.db_name)
+                const collection = db.collection(collectionName)
                 collection.findOne(filter, (err, result) => {
                     if (err) {
                         if (this.isVariableFunction(error))
@@ -73,9 +74,54 @@ module.exports = class DatabaseHelper {
                         else if (this.isVariableFunction(error))
                             error('callback must declared')
                     }
+
+                })
+                this.client.close()
+            }
+        })
+    }
+
+    /**
+     * Update a collection by data
+     * @param {Array} filter the condition for find and update
+     * @param {Array} data a dict valu of the data you want to update
+     * @param {String} collection the collection you want to update
+     * @param {Function} callback 
+     * @param {Function} error 
+     */
+    updateCollection(filter, data, collectionName, callback, error) {
+        this.client.connect(err => {
+            if (err)
+                error(err)
+            else {
+                const collection = this.client.db(this.db_name).collection(collectionName)
+                collection.updateMany(filter, data, (err, result) => {
+                    if (err)
+                        error(err)
+                    else {
+                        callback(result)
+                    }
+                    this.client.close()
                 })
             }
-            this.client.close()
+        })
+    }
+
+    updateOneCollection(filter, data, collectionName, callback, error) {
+        this.client.connect(err => {
+            if (err)
+                error(err)
+            else {
+                const collection = this.client.db(this.db_name).collection(collectionName)
+                collection.updateOne(filter, data, (err, result) => {
+                    if (err)
+                        error(err)
+                    else {
+                        callback(res.result.nModified)
+                    }
+                    this.client.close()
+                })
+            }
         })
     }
 
