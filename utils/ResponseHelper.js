@@ -14,19 +14,19 @@ module.exports = class ResponseHelper {
     }
 
     setStatus(status) {
-        this.response.data.status = status;
+        this.response.data.status = status
     }
 
     putData(key, value) {
-        this.response.data[key] = value;
+        this.response.data[key] = value
     }
 
     removeData(key) {
-        delete this.response[key];
+        delete this.response[key]
     }
 
     getResponse() {
-        return this.response;
+        return this.response
     }
 
 }

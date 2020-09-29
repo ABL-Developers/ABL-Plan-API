@@ -12,6 +12,6 @@ module.exports = class CryptographyHelper {
             .update(stringPassword)
             .digest('hex')
 
-        return hashPass;
+        return hashPass
     }
 }

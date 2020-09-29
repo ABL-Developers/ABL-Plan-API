@@ -21,7 +21,7 @@ module.exports = class AccountsControl extends DatabaseHelper {
     isUserIdValid(userId) {
         this.client.connect(err => {
             const collection = this.client.db("accounts").collection("users")
-            var o_id = new mongo.ObjectID(userId);
+            var o_id = new mongo.ObjectID(userId)
             const filter = { '_id': o_id }
             collection.findOne(filter, (err, callback) => {
                 const result = Object.keys(callback).length > 0

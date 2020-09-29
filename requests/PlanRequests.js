@@ -10,8 +10,8 @@ module.exports = class PlanRequests extends RequestsHelper {
   }
 
   static addNewPlan(req, res) {
-    const needleParams = ["title", "description", "createdDate"];
-    let uid = req.user._id;
+    const needleParams = ["title", "description", "createdDate"]
+    let uid = req.user._id
     if (!PlanRequests.checkParameters(req.body, needleParams)) {
       res.send(400)
       return
@@ -26,20 +26,20 @@ module.exports = class PlanRequests extends RequestsHelper {
       description: req.body.description,
       createdDate: req.body.createdDate,
       deadlineDate: req.body.deadlineDate,
-    };
+    }
 
-    let responseHelper = new ResponseHelper();
-    let planControl = new PlansControl();
+    let responseHelper = new ResponseHelper()
+    let planControl = new PlansControl()
     planControl.getListener().on("insert-success", () => {
-      responseHelper.setStatus(true);
-      res.json(responseHelper.getResponse());
-    });
+      responseHelper.setStatus(true)
+      res.json(responseHelper.getResponse())
+    })
     planControl.getListener().on("insert-error", (error) => {
       responseHelper.putData('msg', error)
-      res.json(responseHelper.getResponse());
-    });
+      res.json(responseHelper.getResponse())
+    })
 
-    planControl.createNewPlan(data, uid);
+    planControl.createNewPlan(data, uid)
   }
 
   static getPlans(req, res) {
@@ -49,8 +49,8 @@ module.exports = class PlanRequests extends RequestsHelper {
       return
     }
 
-    let responseHelper = new ResponseHelper();
-    let planControl = new PlansControl();
+    let responseHelper = new ResponseHelper()
+    let planControl = new PlansControl()
 
     planControl.getListener().on('get-plans', (plans) => {
       responseHelper.putData('plans', plans)
