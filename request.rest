@@ -42,7 +42,7 @@ POST http://localhost:3000/plan/add
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjcxYWVhMTU1NmFiMTY2ZTA3ZjAwZjUiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjhUMDk6MzY6MzMuMTQzWiIsImlhdCI6MTYwMTM2MjA0OH0.2_94sbyOmcN1rXmNh9P88BL-j05WeCL6liaMEbET7XE",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjczNjUyMmNlNGI0ZDMzYTRmNjJhMmMiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjlUMTY6NDc6MzAuMzk2WiIsImlhdCI6MTYwMTQ5MzY1N30.UwN_RlEe_cZ0h0NhyPLwJ9vtYqzsjfNFMvqQgpz9VnA",
     "title": "New Title Ok",
     "description": "Just a test plan !",
     "createdDate": "2020-09-29 08:18",
@@ -51,15 +51,24 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/check-date
-Content-Type: application/json
-
-###
-
-GET http://localhost:3000/plan/get/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjcxYWVhMTU1NmFiMTY2ZTA3ZjAwZjUiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjhUMDk6MzY6MzMuMTQzWiIsImlhdCI6MTYwMTMyMTIyN30.6X7ruMFIwrdQ-u7MT3mtg1zGq9CE1v7tiqFDaWrWzzw
+GET http://localhost:3000/plan/get/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjczNjUyMmNlNGI0ZDMzYTRmNjJhMmMiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjlUMTY6NDc6MzAuMzk2WiIsImlhdCI6MTYwMTUyNzA1OH0.WugGO5DlpVuETLdBJiuAwkSfYK-iVQsufMTCAORG-F4
 Content-Type: application/json
 
 ###
 
 GET http://localhost:3000/accounts/taken/username/abolfazlalz
 Content-Type: application/json
+
+###
+
+PUT http://localhost:3000/plan/update/test
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjczNjUyMmNlNGI0ZDMzYTRmNjJhMmMiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjlUMTY6NDc6MzAuMzk2WiIsImlhdCI6MTYwMTQ0ODIyOX0.hjKtpacA-exNP20h8WEDtvzmM2Tr0zjX4QOTt_im5-g",
+    "name": "Hello World"
+}
+
+###
+
+GET http://localhost:3000/plan/is-admin/5f74dac6e7843a1f30816bda/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjczNjUyMmNlNGI0ZDMzYTRmNjJhMmMiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjlUMTY6NDc6MzAuMzk2WiIsImlhdCI6MTYwMTU0MjcwN30.g4ob4Q1WQYRdFuIjJeURPZm0cF4lhY7Z7g2nH_Wuu98

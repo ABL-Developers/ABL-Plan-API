@@ -41,8 +41,8 @@ module.exports = class DatabaseHelper {
                     } else if (this.isVariableFunction(error)) {
                         error('callback must declared')
                     }
+                    this.client.close()
                 })
-                this.client.close()
             }
         })
     }

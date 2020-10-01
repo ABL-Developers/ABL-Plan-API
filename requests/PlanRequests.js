@@ -2,11 +2,18 @@ const RequestsHelper = require('./RequestsHelper')
 const ResponseHelper = require('../utils/ResponseHelper')
 const PlansControl = require('../databaseControl/PlansControl')
 const RegisterRequests = require('./RegisterRequests')
+const express = require('express')
 
 module.exports = class PlanRequests extends RequestsHelper {
+
+  /**
+   * @param {express.Express} app 
+   */
   static startRequestsListener(app) {
     app.post('/plan/add', RegisterRequests.checkAuthToken, PlanRequests.addNewPlan)
     app.get('/plan/get/:refreshToken', RegisterRequests.checkAuthTokenParameter, PlanRequests.getPlans)
+    app.get('/plan/is-admin/:planId/:refreshToken', RegisterRequests.checkAuthTokenParameter, PlanRequests.isUserAdmin)
+    app.put('/plan/update/:planId', RegisterRequests.checkAuthToken, (req, res) => PlanRequests.updatePlan)
   }
 
   static addNewPlan(req, res) {
@@ -65,4 +72,35 @@ module.exports = class PlanRequests extends RequestsHelper {
 
     planControl.getPlans(uid)
   }
+
+  /**
+   * a request for checking the user is admin of plan or not
+   * @param {Express.Request} req
+   * @param {Express.Response} res
+   */
+  static isUserAdmin(req, res) {
+    const uid = req.user._id
+    const planId = req.params.planId
+
+    const planControl = new PlansControl()
+    const responseHelper = new ResponseHelper()
+    planControl.isUserPlanAdmin(planId, uid, callback => {
+      responseHelper.putData('result', callback)
+      responseHelper.setStatus(true)
+      res.json(responseHelper.getResponse())
+    }, error => {
+      responseHelper.putData('msg', error)
+      res.json(responseHelper.getResponse())
+    })
+  }
+
+  /**
+   * @param {express.Request} req 
+   * @param {express.Response} res 
+   */
+  static updatePlan(req, res) {
+    const planId = req.params.planId
+
+  }
+
 }

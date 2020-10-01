@@ -19,64 +19,70 @@ module.exports = class PlansControl extends DatabaseHelper {
 
         let account = new AccountsControl()
 
-        account.isUserIdValid(userId)
-        account.getListener().on(AccountsControl.USER_VALIDATION,
-            (isUserValid) => {
+        account.isUserIdValid(userId, (isUserValid) => isValidResult(this, isUserValid), (error) => {
+            this.listener.emit('insert-error', error)
+        })
 
-                if (!isUserValid) {
-                    this.listener.emit('insert-error', 'The entered user is invalid')
+        /**
+         * 
+         * @param {PlansControl} _this 
+         * @param {Boolean} isUserValid 
+         */
+        function isValidResult(_this, isUserValid) {
+            if (!isUserValid) {
+                _this.listener.emit('insert-error', 'The entered user is invalid')
+                return
+            }
+
+            let createdDate = data.createdDate
+            if (!_this.checkDate(createdDate)) {
+                _this.listener.emit('insert-error', 'Created date is not valid')
+                return
+            }
+            let deadlineDate = createdDate
+            if (data.deadlineDate != undefined) {
+                if (!_this.checkDate(data.deadlineDate)) {
+                    _this.listener.emit('insert-error', 'Deadline date is not valid')
                     return
                 }
+                deadlineDate = data.deadlineDate
+            }
 
-                let createdDate = data.createdDate
-                if (!this.checkDate(createdDate)) {
-                    this.listener.emit('insert-error', 'Created date is not valid')
-                    return
-                }
-                let deadlineDate = createdDate
-                if (data.deadlineDate != undefined) {
-                    if (!this.checkDate(data.deadlineDate)) {
-                        this.listener.emit('insert-error', 'Deadline date is not valid')
-                        return
-                    }
-                    deadlineDate = data.deadlineDate
-                }
+            if (data.title == '' || data.title == undefined) {
+                _this.listener.emit('insert-error', 'Title must have value')
+                return
+            }
 
-                if (data.title == '' || data.title == undefined) {
-                    this.listener.emit('insert-error', 'Title must have value')
-                    return
+            let planData = {
+                'title': data.title,
+                'description': data.description,
+                'dates': {
+                    'created': data.createdDate,
+                    'deadline': deadlineDate,
+                    'modified': data.createdDate
+                },
+                "users": {
+                    ['user' + userId]: ['creator']
                 }
+            }
 
-                let planData = {
-                    'title': data.title,
-                    'description': data.description,
-                    'dates': {
-                        'created': data.createdDate,
-                        'deadline': deadlineDate,
-                        'modified': data.createdDate
-                    },
-                    "users": {
-                        ['user' + userId]: ['creator']
-                    }
+            _this.Client.connect(err => {
+                if (err) {
+                    _this.listener.emit('insert-error', err)
+                } else {
+                    const plans = _this.client.db("plans").collection("plans")
+                    plans.insertOne(planData, callback => {
+                        if (callback != undefined && callback.hasErrorLabel)
+                            _this.listener.emit("insert-error", callback.error)
+                        else
+                            _this.listener.emit("insert-success")
+                    }, error => {
+                        _this.listener.emit("insert-error", error)
+                    })
                 }
-
-                this.client.connect(err => {
-                    if (err) {
-                        this.listener.emit('insert-error', err)
-                    } else {
-                        const plans = this.client.db("plans").collection("plans")
-                        plans.insertOne(planData, callback => {
-                            if (callback != undefined && callback.hasErrorLabel)
-                                this.listener.emit("insert-error", callback.error)
-                            else
-                                this.listener.emit("insert-success")
-                        }, error => {
-                            this.listener.emit("insert-error", error)
-                        })
-                    }
-                    this.client.close()
-                })
+                _this.client.close()
             })
+        }
     }
 
     checkDate(date) {
@@ -84,8 +90,7 @@ module.exports = class PlansControl extends DatabaseHelper {
     }
 
     getPlans(uid, limit = 10, skip = 0) {
-
-        this.client.connect(err => {
+        this.Client.connect(err => {
             if (err) {
                 this.listener.emit('get-plans-error', err)
                 return
@@ -98,8 +103,8 @@ module.exports = class PlansControl extends DatabaseHelper {
                 }
                 this.listener.emit('get-plans', result)
             })
-            this.client.close()
         })
+        this.client.close()
     }
 
     updateCollection(filter, data, collectionName, callback, error) {
@@ -116,5 +121,20 @@ module.exports = class PlansControl extends DatabaseHelper {
         var o_id = new mongo.ObjectID(planId)
         const filter = { '_id': o_id }
         this.updateOneCollection(filter, dataToUpdate, 'plans', callback, error)
+    }
+
+    isUserPlanAdmin(planId, userId, callback, error = undefined) {
+        this.Client.connect(err => {
+            if (err && error != undefined)
+                error(err)
+            var o_id = new mongo.ObjectID(planId)
+            const users = ['users.user' + userId]
+            const filter = {
+                '_id': o_id,
+                ['users.user' + userId]: { $exists: true },
+                ['users.user' + userId]: { $in: ['creator'] }
+            }
+            this.checkDataExists(filter, 'plans', callback, error)
+        })
     }
 }

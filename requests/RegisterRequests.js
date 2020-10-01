@@ -76,6 +76,17 @@ module.exports = class RegisterRequests extends RequestsHelper {
         })
     }
 
+    static checkAuthHeaderToken(req, res, next) {
+        const refreshToken = req.header.token
+        if (refreshToken == null) return res.sendStatus(401)
+        if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
+        jwt.verify(refreshToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+            if (err) return res.sendStatus(403)
+            req.user = user
+            next()
+        })
+    }
+
     static checkAuthTokenParameter(req, res, next) {
         const refreshToken = req.params.refreshToken
         if (refreshToken == null) return res.sendStatus(401)
