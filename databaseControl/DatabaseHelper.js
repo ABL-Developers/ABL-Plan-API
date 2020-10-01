@@ -95,7 +95,7 @@ module.exports = class DatabaseHelper {
                 error(err)
             else {
                 const collection = this.client.db(this.db_name).collection(collectionName)
-                collection.updateMany(filter, data, (err, result) => {
+                collection.updateMany(filter, { $set: data }, (err, result) => {
                     if (err)
                         error(err)
                     else {
@@ -108,20 +108,17 @@ module.exports = class DatabaseHelper {
     }
 
     updateOneCollection(filter, data, collectionName, callback, error) {
-        this.client.connect(err => {
-            if (err)
-                error(err)
-            else {
-                const collection = this.client.db(this.db_name).collection(collectionName)
-                collection.updateOne(filter, data, (err, result) => {
-                    if (err)
-                        error(err)
-                    else {
-                        callback(res.result.nModified)
-                    }
-                    this.client.close()
-                })
-            }
+        MongoClient.connect(uri, (err, db) => {
+            if (err) throw err
+            var dbo = db.db(this.db_name)
+            const updateData = { $set: data }
+            dbo.collection(collectionName).updateOne(filter, updateData, (err, result) => {
+                if (err)
+                    error(err)
+                else
+                    callback(result)
+                db.close()
+            })
         })
     }
 

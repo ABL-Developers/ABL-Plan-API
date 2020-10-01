@@ -61,12 +61,12 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3000/plan/update/test
+PUT http://localhost:3000/plan/update/5f74dac6e7843a1f30816bda
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjczNjUyMmNlNGI0ZDMzYTRmNjJhMmMiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjlUMTY6NDc6MzAuMzk2WiIsImlhdCI6MTYwMTQ0ODIyOX0.hjKtpacA-exNP20h8WEDtvzmM2Tr0zjX4QOTt_im5-g",
-    "name": "Hello World"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjczNjUyMmNlNGI0ZDMzYTRmNjJhMmMiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjlUMTY6NDc6MzAuMzk2WiIsImlhdCI6MTYwMTU2Mjc2NX0.TfqM7_QkBtC1g0cAipgtdFvzjNSQo8THFKUEgpe3g3o",
+    "title": "Buy a new laptop"
 }
 
 ###

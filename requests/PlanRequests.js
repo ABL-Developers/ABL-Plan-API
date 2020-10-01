@@ -13,7 +13,7 @@ module.exports = class PlanRequests extends RequestsHelper {
     app.post('/plan/add', RegisterRequests.checkAuthToken, PlanRequests.addNewPlan)
     app.get('/plan/get/:refreshToken', RegisterRequests.checkAuthTokenParameter, PlanRequests.getPlans)
     app.get('/plan/is-admin/:planId/:refreshToken', RegisterRequests.checkAuthTokenParameter, PlanRequests.isUserAdmin)
-    app.put('/plan/update/:planId', RegisterRequests.checkAuthToken, (req, res) => PlanRequests.updatePlan)
+    app.put('/plan/update/:planId', RegisterRequests.checkAuthToken, PlanRequests.updatePlan)
   }
 
   static addNewPlan(req, res) {
@@ -99,7 +99,21 @@ module.exports = class PlanRequests extends RequestsHelper {
    * @param {express.Response} res 
    */
   static updatePlan(req, res) {
+    const response = new ResponseHelper()
     const planId = req.params.planId
+    const userId = req.user._id
+    const plans = new PlansControl()
+    plans.updatePlan(planId, userId, req.body, result => {
+      response.putData('result', result)
+      res.json(response.getResponse())
+    }, (error, code) => {
+      response.putData('msg', error)
+      if (code != undefined)
+        res.status(code).json(response.getResponse())
+      else
+        res.json(response.getResponse())
+
+    })
 
   }
 

@@ -109,18 +109,50 @@ module.exports = class PlansControl extends DatabaseHelper {
 
     updateCollection(filter, data, collectionName, callback, error) {
         data['dates']['modified'] = moment().format('YY-MM-DD HH-mm')
-        this.updateCollection(filter, data, collectionName, callback, error)
+        super.updateCollection(filter, data, collectionName, callback, error)
     }
 
     updateOneCollection(filter, data, collectionName, callback, error) {
-        data['dates']['modified'] = moment().format('YY-MM-DD HH-mm')
-        this.updateCollection(filter, data, collectionName, callback, error)
+        // if ('data' in data) {
+        //     data['dates']['modified'] = moment().format('YY-MM-DD HH-mm')
+        // } else {
+        //     data['dates'] = {
+        //         modified: moment().format('YYYY-MM-DD HH:mm:ss')
+        //     }
+        // }
+        super.updateOneCollection(filter, data, collectionName, callback, error)
     }
 
-    updatePlan(planId, dataToUpdate, callback, error) {
-        var o_id = new mongo.ObjectID(planId)
-        const filter = { '_id': o_id }
-        this.updateOneCollection(filter, dataToUpdate, 'plans', callback, error)
+    /**
+     * update data of a plan
+     * @param {Integer} planId the plan you want to update
+     * @param {Array} dataToUpdate list of data you want to updateOneCollection
+     * @param {Function} callback 
+     * @param {Function} error 
+     */
+    updatePlan(planId, userId, dataToUpdate, callback, error) {
+        this.isUserPlanAdmin(planId, userId, result => {
+            if (result == false) {
+                error('You dont have access to this plan', 403)
+                return
+            }
+            const keys = Object.keys(dataToUpdate)
+            const allowedKeys = ['deadlineDate', 'title', 'description']
+            for (let key of keys) {
+                if (!(allowedKeys.includes(key))) {
+                    delete dataToUpdate[key]
+                }
+            }
+            if ('deadlineDate' in dataToUpdate) {
+                dataToUpdate.dates = {
+                    modified: dataToUpdate.deadlineDate
+                }
+                delete dataToUpdate.deadlineDate
+            }
+            var o_id = new mongo.ObjectID(planId)
+            const filter = { '_id': o_id }
+            this.updateOneCollection(filter, dataToUpdate, 'plans', callback, error)
+        }, error)
     }
 
     isUserPlanAdmin(planId, userId, callback, error = undefined) {
@@ -128,7 +160,6 @@ module.exports = class PlansControl extends DatabaseHelper {
             if (err && error != undefined)
                 error(err)
             var o_id = new mongo.ObjectID(planId)
-            const users = ['users.user' + userId]
             const filter = {
                 '_id': o_id,
                 ['users.user' + userId]: { $exists: true },
