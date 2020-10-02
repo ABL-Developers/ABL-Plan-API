@@ -3,12 +3,12 @@ require('dotenv').config()
 const EventEmitter = require('events').EventEmitter
 const MongoClient = require('mongodb').MongoClient
 
-const uri = `mongodb+srv://abolfazlalz:${process.env.DB_PASSWORD}@cluster0.homvc.mongodb.net/?retryWrites=true&w=majority`
+const url = `mongodb+srv://abolfazlalz:${process.env.DB_PASSWORD}@cluster0.homvc.mongodb.net/?retryWrites=true&w=majority`
 
 module.exports = class DatabaseHelper {
     constructor(db_name) {
         this.listener = new EventEmitter()
-        this.client = new MongoClient(uri, { useNewUrlParser: true })
+        this.client = new MongoClient(url, { useNewUrlParser: true })
         this.db_name = db_name
     }
 
@@ -21,11 +21,11 @@ module.exports = class DatabaseHelper {
     }
 
     find(filter, collectionName, callback, error = undefined) {
-        this.client.connect(err => {
+        MongoClient.connect(url, (err, client) => {
             if (err) {
                 error(err)
             } else {
-                const collection = this.client.db(this.db_name).collection(collectionName)
+                const collection = client.db(this.db_name).collection(collectionName)
                 collection.find(filter).toArray((err, result) => {
                     if (err) {
                         if (error != undefined && typeof (error) == 'function') {
@@ -41,7 +41,7 @@ module.exports = class DatabaseHelper {
                     } else if (this.isVariableFunction(error)) {
                         error('callback must declared')
                     }
-                    this.client.close()
+                    client.close()
                 })
             }
         })
@@ -55,11 +55,11 @@ module.exports = class DatabaseHelper {
      * @param {Function} error 
      */
     checkDataExists(filter, collectionName, callback, error) {
-        this.client.connect(err => {
+        MongoClient.connect(url, (err, client) => {
             if (err) {
                 error(err)
             } else {
-                const db = this.client.db(this.db_name)
+                const db = client.db(this.db_name)
                 const collection = db.collection(collectionName)
                 collection.findOne(filter, (err, result) => {
                     if (err) {
@@ -76,7 +76,7 @@ module.exports = class DatabaseHelper {
                     }
 
                 })
-                this.client.close()
+                client.close()
             }
         })
     }
@@ -90,34 +90,69 @@ module.exports = class DatabaseHelper {
      * @param {Function} error 
      */
     updateCollection(filter, data, collectionName, callback, error) {
-        this.client.connect(err => {
+        MongoClient.connect(url, (err, client) => {
             if (err)
                 error(err)
             else {
-                const collection = this.client.db(this.db_name).collection(collectionName)
+                const collection = client.db(this.db_name).collection(collectionName)
                 collection.updateMany(filter, { $set: data }, (err, result) => {
                     if (err)
                         error(err)
                     else {
                         callback(result)
                     }
-                    this.client.close()
+                    client.close()
                 })
             }
         })
     }
 
     updateOneCollection(filter, data, collectionName, callback, error) {
-        MongoClient.connect(uri, (err, db) => {
+        MongoClient.connect(url, (err, client) => {
             if (err) throw err
-            var dbo = db.db(this.db_name)
+            var dbo = client.db(this.db_name)
             const updateData = { $set: data }
             dbo.collection(collectionName).updateOne(filter, updateData, (err, result) => {
                 if (err)
                     error(err)
                 else
                     callback(result)
-                db.close()
+                client.close()
+            })
+        })
+    }
+
+    deleteOneCollection(filter, collection, callback, error = undefined) {
+        MongoClient.connect(url, (err, client) => {
+            if (err && error != undefined) {
+                error(err)
+                return
+            }
+            let db = client.db(this.db_name)
+            db.collection(collection).deleteOne(filter, (err, callback) => {
+                if (err && error != undefined)
+                    error(err)
+                else
+                    callback(true)
+
+                client.close()
+            })
+        })
+    }
+
+    deleteManyCollection(filter, collection, callback, error = undefined) {
+        MongoClient.connect(url, (err, client) => {
+            if (err && error != undefined) {
+                error(err)
+                return
+            }
+            let db = client.db(this.db_name)
+            db.collection(collection).deleteMany(filter, (err, result) => {
+                if (err && error != undefined)
+                    error(err)
+                else
+                    callback(result.result.n)
+                client.close()
             })
         })
     }
