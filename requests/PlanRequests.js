@@ -57,6 +57,14 @@ module.exports = class PlanRequests extends RequestsHelper {
       return
     }
 
+    let limit = 0
+    let skip = 10
+
+    if ("limit" in req.params)
+      limit = req.params["limit"]
+    if ("skip" in req.params)
+      skip = req.params["skip"]
+
     let responseHelper = new ResponseHelper()
     let planControl = new PlansControl()
 
@@ -71,7 +79,7 @@ module.exports = class PlanRequests extends RequestsHelper {
       res.json(responseHelper.getResponse())
     })
 
-    planControl.getPlans(uid)
+    planControl.getPlans(uid, limit, skip)
   }
 
   /**
