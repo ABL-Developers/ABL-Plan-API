@@ -129,7 +129,7 @@ module.exports = class DatabaseHelper {
                 return
             }
             let db = client.db(this.db_name)
-            db.collection(collection).deleteOne(filter, (err, callback) => {
+            db.collection(collection).deleteOne(filter, (err, result) => {
                 if (err && error != undefined)
                     error(err)
                 else

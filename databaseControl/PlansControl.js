@@ -7,8 +7,6 @@ const moment = require('moment')
 const AccountsControl = require('./AccountsControl')
 const DatabaseHelper = require('./DatabaseHelper')
 
-const uri = `mongodb+srv://abolfazlalz:${process.env.DB_PASSWORD}@cluster0.homvc.mongodb.net/plans?retryWrites=true&w=majority`
-
 module.exports = class PlansControl extends DatabaseHelper {
 
     constructor() {
@@ -155,15 +153,30 @@ module.exports = class PlansControl extends DatabaseHelper {
         }, error)
     }
 
+    deletePlan(planId, userId, callback, error = undefined) {
+        this.isUserPlanAdmin(planId, userId, isUserValid => {
+            if (!isUserValid) {
+                error('You dont have access to this plan', 403)
+                return
+            }
+            var o_id = new mongo.ObjectID(planId)
+            const filter = { '_id': o_id }
+
+            this.deleteOneCollection(filter, 'plans', callback, error)
+        }, error)
+    }
+
     isUserPlanAdmin(planId, userId, callback, error = undefined) {
         this.Client.connect(err => {
             if (err && error != undefined)
                 error(err)
             var o_id = new mongo.ObjectID(planId)
             const filter = {
-                '_id': o_id,
-                ['users.user' + userId]: { $exists: true },
-                ['users.user' + userId]: { $in: ['creator'] }
+                $and: [
+                    { '_id': o_id },
+                    { ['users.user' + userId]: { $exists: true } },
+                    { ['users.user' + userId]: { $in: ['creator'] } }
+                ]
             }
             this.checkDataExists(filter, 'plans', callback, error)
         })

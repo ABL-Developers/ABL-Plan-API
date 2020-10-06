@@ -14,6 +14,7 @@ module.exports = class PlanRequests extends RequestsHelper {
     app.get('/plan/get/:refreshToken', RegisterRequests.checkAuthTokenParameter, PlanRequests.getPlans)
     app.get('/plan/is-admin/:planId/:refreshToken', RegisterRequests.checkAuthTokenParameter, PlanRequests.isUserAdmin)
     app.put('/plan/update/:planId', RegisterRequests.checkAuthToken, PlanRequests.updatePlan)
+    app.delete('/plan/delete/:planId', RegisterRequests.checkAuthToken, PlanRequests.deletePlan)
   }
 
   static addNewPlan(req, res) {
@@ -117,4 +118,24 @@ module.exports = class PlanRequests extends RequestsHelper {
 
   }
 
+  /**
+   * @param {express.Request} req 
+   * @param {express.Response} res 
+   */
+  static deletePlan(req, res) {
+    const userId = req.user._id
+    const planId = req.params.planId
+    const plans = new PlansControl()
+    const response = new ResponseHelper()
+    plans.deletePlan(planId, userId, callback => {
+      response.putData('result', callback)
+      res.json(response.getResponse())
+    }, (error, status) => {
+      response.setMessage(error)
+      if (status != undefined)
+        res.status(status).json(response.getResponse())
+      else
+        res.send(response.getResponse())
+    })
+  }
 }
