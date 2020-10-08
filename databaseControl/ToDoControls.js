@@ -10,7 +10,7 @@ module.exports = class ToDoControls extends DatabaseHelper {
     addToDo(planId, title, deadline, success, error) {
         if (title === null) {
             error('Title is empty')
-        } else if (moment(deadline, 'YYYY-MM-DD HH:mm:ss').isValid()) {
+        } else if (!moment(deadline, 'YYYY-MM-DD HH:mm:ss').isValid()) {
             error('Deadline is not valid')
         }
 
@@ -19,7 +19,7 @@ module.exports = class ToDoControls extends DatabaseHelper {
         plansControl.isValidPlanId(planId, callback => {
             if (callback) {
                 const data = {
-                    title: toDoData.title,
+                    title: title,
                     planId: planId,
                     isCompleted: false,
                     dates: {

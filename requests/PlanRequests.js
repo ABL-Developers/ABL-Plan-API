@@ -1,8 +1,10 @@
 const RequestsHelper = require('./RequestsHelper')
 const ResponseHelper = require('../utils/ResponseHelper')
 const PlansControl = require('../databaseControl/PlansControl')
+const ToDoControls = require('../databaseControl/ToDoControls')
 const RegisterRequests = require('./RegisterRequests')
 const express = require('express')
+const { checkParameters } = require('./RequestsHelper')
 
 module.exports = class PlanRequests extends RequestsHelper {
 
@@ -15,6 +17,7 @@ module.exports = class PlanRequests extends RequestsHelper {
     app.get('/plan/is-admin/:planId/:refreshToken', RegisterRequests.checkAuthTokenParameter, PlanRequests.isUserAdmin)
     app.put('/plan/update/:planId', RegisterRequests.checkAuthToken, PlanRequests.updatePlan)
     app.delete('/plan/delete/:planId', RegisterRequests.checkAuthToken, PlanRequests.deletePlan)
+    app.post('/plan/todo/add', RegisterRequests.checkAuthToken, PlanRequests.addNewToDo)
   }
 
   static addNewPlan(req, res) {
@@ -144,6 +147,38 @@ module.exports = class PlanRequests extends RequestsHelper {
         res.status(status).json(response.getResponse())
       else
         res.send(response.getResponse())
+    })
+  }
+
+
+  /**
+   * Add new ToDo item to Plan
+   * @param {express.Request} req
+   * @param {express.Response} res
+   */
+  static addNewToDo(req, res) {
+    const response = new ResponseHelper()
+    if (!RequestsHelper.checkParameters(req, ['planId', 'title', 'deadline'])) {
+      response.setMessage('Please enter all of the following parameters')
+      res.status(400).send(response.getResponse())
+      return
+    }
+    const planId = req.body.planId
+    const title = req.body.title
+    const deadline = req.body.deadline
+
+    const toDoControls = new ToDoControls()
+    toDoControls.addToDo(planId, title, deadline, success => {
+      response.putData('result', true)
+      response.setStatus(true)
+      res.send(response.getResponse())
+    }, (error, code) => {
+      response.putData('msg', error)
+      if (code != undefined) {
+        res.status(code).send(response.getResponse())
+      } else {
+        res.send(response.getResponse())
+      }
     })
   }
 }
