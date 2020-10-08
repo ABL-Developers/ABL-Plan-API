@@ -161,4 +161,27 @@ module.exports = class DatabaseHelper {
         return variable != undefined && typeof (variable) == 'function'
     }
 
+    insertOneCollection(data, collectionName, callback, error = undefined) {
+        MongoClient.connect(url, (err, client) => {
+            if (err) {
+                if (err != undefined) {
+                    error(err)
+                } else {
+                    throw err
+                }
+            }
+            var dbo = client.db(this.db_name)
+            dbo.collection(collectionName).insertOne(data, (err, result) => {
+                if (err) {
+                    if (error != undefined)
+                        error(err)
+                    throw err
+                }
+                else
+                    callback(result)
+                client.close()
+            })
+        })
+    }
+
 }
