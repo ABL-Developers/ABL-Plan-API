@@ -181,4 +181,10 @@ module.exports = class PlansControl extends DatabaseHelper {
             this.checkDataExists(filter, 'plans', callback, error)
         })
     }
+
+    isValidPlanId(planId, callback, error = undefined) {
+        const id = new mongo.ObjectID(planId)
+        const filter = { _id: id }
+        this.checkDataExists(filter, 'plans', callback, error)
+    }
 }
