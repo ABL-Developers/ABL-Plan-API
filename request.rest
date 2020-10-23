@@ -8,11 +8,11 @@ Content-Type: application/json
 
 {
     "authorizations": "5550049443b74107469df312b45d3a984a38da5ed38e0fc1b9b2899048796ce1d791adb96f22cf7ac746589548f0a3da7a42ec82e4e54bc3ebd25c55a5fea6a3",
-    "username": "abolfazlalz",
-    "password": "ParisaAnd729",
-    "email": "mrabolfazlalz@gmail.com",
-    "firstname": "Abolfazl",
-    "lastname": "Alizadeh"
+    "username": "sajad",
+    "password": "sajad",
+    "email": "sajad@example.com",
+    "firstname": "Sajad",
+    "lastname": "Alizadeh1"
 }
 
 ###
@@ -42,8 +42,8 @@ POST http://localhost:3000/plan/add
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjczNjUyMmNlNGI0ZDMzYTRmNjJhMmMiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjlUMTY6NDc6MzAuMzk2WiIsImlhdCI6MTYwMjE0ODI0M30.sAUkdh1I_Z0fP-2sanFLHVb7Sim19eJ6GzSnfvLpvzo",
-    "title": "New Title Ok",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjczNjUyMmNlNGI0ZDMzYTRmNjJhMmMiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjlUMTY6NDc6MzAuMzk2WiIsImlhdCI6MTYwMjQ5Mjg5OH0.C3P2TrohoFKlXRdq6hrem0x35b7nUPG4r3wlevjVf0A",
+    "title": "Buy something",
     "description": "Just a test plan !",
     "createdDate": "2020-09-29 08:18",
     "deadlineDate": "2020-09-29 08:18"
@@ -88,8 +88,8 @@ POST http://localhost:3000/plan/todo/add
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjczNjUyMmNlNGI0ZDMzYTRmNjJhMmMiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjlUMTY6NDc6MzAuMzk2WiIsImlhdCI6MTYwMjE0ODUzMH0.YscH1ExbKwu-o-BOS_InG1rw-8aOenrfKrOUHL6asJE",
-    "planId": "5f7c7d151a33ea32c4aeff34",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjczNjUyMmNlNGI0ZDMzYTRmNjJhMmMiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjlUMTY6NDc6MzAuMzk2WiIsImlhdCI6MTYwMjQ5Mjg5OH0.C3P2TrohoFKlXRdq6hrem0x35b7nUPG4r3wlevjVf0A",
+    "planId": "5f841a071ebd7342080e944c",
     "title": "Make a lot money",
     "deadline": "2020-09-29 08:18"
 }
