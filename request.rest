@@ -88,8 +88,13 @@ POST http://localhost:3000/plan/todo/add
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjczNjUyMmNlNGI0ZDMzYTRmNjJhMmMiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjlUMTY6NDc6MzAuMzk2WiIsImlhdCI6MTYwMjQ5Mjg5OH0.C3P2TrohoFKlXRdq6hrem0x35b7nUPG4r3wlevjVf0A",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjczNjUyMmNlNGI0ZDMzYTRmNjJhMmMiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjlUMTY6NDc6MzAuMzk2WiIsImlhdCI6MTYwMzkwOTY2MH0.DSd_1WWJs_jqc8T7HJawqv4MzgiFAOTYyNZ7znSf6Fc",
     "planId": "5f841a071ebd7342080e944c",
     "title": "Make a lot money",
     "deadline": "2020-09-29 08:18"
 }
+
+###
+
+GET http://localhost:3000/plan/todo/get/5f841a071ebd7342080e944c/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjczNjUyMmNlNGI0ZDMzYTRmNjJhMmMiLCJuYW1lIjoiQWJvbGZhemwiLCJsYXN0bmFtZSI6IkFsaXphZGVoIiwidXNlcm5hbWUiOiJhYm9sZmF6bGFseiIsImVtYWlsIjoibXJhYm9sZmF6bGFsekBnbWFpbC5jb20iLCJkYXRlQ3JlYXRlZCI6IjIwMjAtMDktMjlUMTY6NDc6MzAuMzk2WiIsImlhdCI6MTYwNDAzMzU5OX0.NU1VYyH-FzWRZaseOHil2fMIduiB4qXnHumenqZPKXM?limit=1
+Content-Type: application/json

@@ -167,19 +167,15 @@ module.exports = class PlansControl extends DatabaseHelper {
     }
 
     isUserPlanAdmin(planId, userId, callback, error = undefined) {
-        this.Client.connect(err => {
-            if (err && error != undefined)
-                error(err)
-            var o_id = new mongo.ObjectID(planId)
-            const filter = {
-                $and: [
-                    { '_id': o_id },
-                    { ['users.user' + userId]: { $exists: true } },
-                    { ['users.user' + userId]: { $in: ['creator'] } }
-                ]
-            }
-            this.checkDataExists(filter, 'plans', callback, error)
-        })
+        var o_id = new mongo.ObjectID(planId)
+        const filter = {
+            $and: [
+                { '_id': o_id },
+                { ['users.user' + userId]: { $exists: true } },
+                { ['users.user' + userId]: { $in: ['creator'] } }
+            ]
+        }
+        this.checkDataExists(filter, 'plans', callback, error)
     }
 
     isValidPlanId(planId, callback, error = undefined) {

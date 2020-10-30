@@ -20,13 +20,22 @@ module.exports = class DatabaseHelper {
         return this.client
     }
 
-    find(filter, collectionName, callback, error = undefined) {
+    /**
+     * Find in a collection
+     * @param {array} filter filter the result of find method
+     * @param {string} collectionName collection name to find in database
+     * @param {int} limit 
+     * @param {int} skip 
+     * @param {Function} callback 
+     * @param {Function} error 
+     */
+    find(filter, collectionName, limit, skip, callback, error = undefined) {
         MongoClient.connect(url, (err, client) => {
             if (err) {
                 error(err)
             } else {
                 const collection = client.db(this.db_name).collection(collectionName)
-                collection.find(filter).toArray((err, result) => {
+                collection.find(filter).limit(limit).skip(skip).toArray((err, result) => {
                     if (err) {
                         if (error != undefined && typeof (error) == 'function') {
                             error(err.message)
@@ -54,17 +63,20 @@ module.exports = class DatabaseHelper {
      * @param {Function} callback 
      * @param {Function} error 
      */
-    checkDataExists(filter, collectionName, callback, error) {
+    checkDataExists(filter, collectionName, callback, error = undefined) {
         MongoClient.connect(url, (err, client) => {
             if (err) {
-                error(err)
+                if (error != null)
+                    error(err.message)
+                else
+                    throw err
             } else {
                 const db = client.db(this.db_name)
                 const collection = db.collection(collectionName)
                 collection.findOne(filter, (err, result) => {
                     if (err) {
                         if (this.isVariableFunction(error))
-                            error(err)
+                            error(err, 500)
                         else
                             throw err
                     } else {
@@ -72,7 +84,7 @@ module.exports = class DatabaseHelper {
                         if (this.isVariableFunction(callback))
                             callback(isExists)
                         else if (this.isVariableFunction(error))
-                            error('callback must declared')
+                            error('callback must declared', 500)
                     }
 
                 })
@@ -92,12 +104,12 @@ module.exports = class DatabaseHelper {
     updateCollection(filter, data, collectionName, callback, error) {
         MongoClient.connect(url, (err, client) => {
             if (err)
-                error(err)
+                error(err.message)
             else {
                 const collection = client.db(this.db_name).collection(collectionName)
                 collection.updateMany(filter, { $set: data }, (err, result) => {
                     if (err)
-                        error(err)
+                        error(err.message)
                     else {
                         callback(result)
                     }
@@ -114,7 +126,7 @@ module.exports = class DatabaseHelper {
             const updateData = { $set: data }
             dbo.collection(collectionName).updateOne(filter, updateData, (err, result) => {
                 if (err)
-                    error(err)
+                    error(err.message)
                 else
                     callback(result)
                 client.close()
@@ -125,13 +137,13 @@ module.exports = class DatabaseHelper {
     deleteOneCollection(filter, collection, callback, error = undefined) {
         MongoClient.connect(url, (err, client) => {
             if (err && error != undefined) {
-                error(err)
+                error(err.message)
                 return
             }
             let db = client.db(this.db_name)
             db.collection(collection).deleteOne(filter, (err, result) => {
                 if (err && error != undefined)
-                    error(err)
+                    error(err.message)
                 else
                     callback(true)
 
@@ -143,13 +155,13 @@ module.exports = class DatabaseHelper {
     deleteManyCollection(filter, collection, callback, error = undefined) {
         MongoClient.connect(url, (err, client) => {
             if (err && error != undefined) {
-                error(err)
+                error(err.message)
                 return
             }
             let db = client.db(this.db_name)
             db.collection(collection).deleteMany(filter, (err, result) => {
                 if (err && error != undefined)
-                    error(err)
+                    error(err.message)
                 else
                     callback(result.result.n)
                 client.close()
@@ -165,7 +177,7 @@ module.exports = class DatabaseHelper {
         MongoClient.connect(url, (err, client) => {
             if (err) {
                 if (err != undefined) {
-                    error(err)
+                    error(err.message)
                 } else {
                     throw err
                 }
@@ -174,8 +186,9 @@ module.exports = class DatabaseHelper {
             dbo.collection(collectionName).insertOne(data, (err, result) => {
                 if (err) {
                     if (error != undefined)
-                        error(err)
-                    throw err
+                        error(err.message)
+                    else
+                        throw err
                 }
                 else
                     callback(result)

@@ -1,6 +1,7 @@
 const DatabaseHelper = require('./DatabaseHelper.js')
 const PlansControl = require('./PlansControl')
 const moment = require('moment')
+const AccountsControl = require('./AccountsControl.js')
 
 module.exports = class ToDoControls extends DatabaseHelper {
     constructor() {
@@ -32,6 +33,24 @@ module.exports = class ToDoControls extends DatabaseHelper {
             } else {
                 error('the entered plan id was not exists in the database')
             }
+        }, error => {
+            error(error, 500)
+        })
+    }
+
+    selectToDo(userId, planId, limit, skip, success, error) {
+        const plansControl = new PlansControl()
+        plansControl.isUserPlanAdmin(planId, userId, isAdmin => {
+            if (!isAdmin) {
+                error('forbidden', 403)
+                return
+            }
+
+            this.find({}, 'todo', limit, skip, callback => {
+                success(callback)
+            }, error => {
+                error(result, 500)
+            })
         })
     }
 }

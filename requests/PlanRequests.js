@@ -5,6 +5,7 @@ const ToDoControls = require('../databaseControl/ToDoControls')
 const RegisterRequests = require('./RegisterRequests')
 const express = require('express')
 const { checkParameters } = require('./RequestsHelper')
+const { response } = require('express')
 
 module.exports = class PlanRequests extends RequestsHelper {
 
@@ -18,6 +19,7 @@ module.exports = class PlanRequests extends RequestsHelper {
     app.put('/plan/update/:planId', RegisterRequests.checkAuthToken, PlanRequests.updatePlan)
     app.delete('/plan/delete/:planId', RegisterRequests.checkAuthToken, PlanRequests.deletePlan)
     app.post('/plan/todo/add', RegisterRequests.checkAuthToken, PlanRequests.addNewToDo)
+    app.get('/plan/todo/get/:planId/:refreshToken', RegisterRequests.checkAuthTokenParameter, PlanRequests.getToDo)
   }
 
   static addNewPlan(req, res) {
@@ -178,6 +180,43 @@ module.exports = class PlanRequests extends RequestsHelper {
         res.status(code).send(response.getResponse())
       } else {
         res.send(response.getResponse())
+      }
+    })
+  }
+
+  /**
+   * select a plan's todos
+   * @param {express.Request} req
+   * @param {express.Response} res
+   */
+  static getToDo(req, res) {
+    const uid = req.user._id
+    const planId = req.params.planId
+    if (uid == undefined) {
+      res.sendStatus(403)
+      return
+    }
+
+    let limit = 10
+    let skip = 0
+
+    if ("limit" in req.query && !isNaN(req.query.limit))
+      limit = parseInt(req.query.limit)
+    if ("skip" in req.query && !isNaN(req.query.skip))
+      skip = parseInt(req.query.skip)
+
+    const responseHelper = new ResponseHelper()
+    const todoCtrl = new ToDoControls()
+    todoCtrl.selectToDo(uid, planId, limit, skip, result => {
+      responseHelper.setStatus(true)
+      responseHelper.putData('todos', result)
+      res.send(responseHelper.getResponse())
+    }, (error, code) => {
+      responseHelper.setMessage(error)
+      if (code != undefined) {
+        res.status(code).send(responseHelper.getResponse())
+      } else {
+        res.send(responseHelper.getResponse())
       }
     })
   }
