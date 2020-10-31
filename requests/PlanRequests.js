@@ -20,6 +20,7 @@ module.exports = class PlanRequests extends RequestsHelper {
     app.delete('/plan/delete/:planId', RegisterRequests.checkAuthToken, PlanRequests.deletePlan)
     app.post('/plan/todo/add', RegisterRequests.checkAuthToken, PlanRequests.addNewToDo)
     app.get('/plan/todo/get/:planId/:refreshToken', RegisterRequests.checkAuthTokenParameter, PlanRequests.getToDo)
+    app.delete('/plan/todo/delete/:todoId', RegisterRequests.checkAuthToken, PlanRequests.deleteToDo)
   }
 
   static addNewPlan(req, res) {
@@ -218,6 +219,23 @@ module.exports = class PlanRequests extends RequestsHelper {
       } else {
         res.send(responseHelper.getResponse())
       }
+    })
+  }
+
+  static deleteToDo(req, res) {
+    const userId = req.user._id
+    const todoId = req.params.todoId
+    const todoCtrl = new ToDoControls()
+    const response = new ResponseHelper()
+    todoCtrl.deleteToDo(userId, todoId, callback => {
+      response.putData('result', callback)
+      res.json(response.getResponse())
+    }, (error, status) => {
+      response.setMessage(error)
+      if (status != undefined)
+        res.status(status).json(response.getResponse())
+      else
+        res.send(response.getResponse())
     })
   }
 }

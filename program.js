@@ -6,11 +6,17 @@ const RegisterRequests = require('./requests/RegisterRequests')
 const AccountsRequests = require('./requests/AccountsRequests')
 const PlanRequests = require('./requests/PlanRequests')
 const mongodb = require('mongodb')
+var bodyParser = require('body-parser')
+var multer = require('multer');
 
 const app = express()
 const port = 3000
 
 app.use(express.json())
+
+// app.use(bodyParser.urlencoded({
+//   extended: true
+// }));
 
 app.get('/', (req, res) => {
   let response = new ResponseHelper()

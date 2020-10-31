@@ -1,7 +1,8 @@
 require('dotenv').config()
 
 const EventEmitter = require('events').EventEmitter
-const MongoClient = require('mongodb').MongoClient
+const mongo = require('mongodb')
+const MongoClient = mongo.MongoClient
 
 const url = `mongodb+srv://abolfazlalz:${process.env.DB_PASSWORD}@cluster0.homvc.mongodb.net/?retryWrites=true&w=majority`
 
@@ -126,6 +127,23 @@ module.exports = class DatabaseHelper {
             const updateData = { $set: data }
             dbo.collection(collectionName).updateOne(filter, updateData, (err, result) => {
                 if (err)
+                    error(err.message)
+                else
+                    callback(result)
+                client.close()
+            })
+        })
+    }
+
+    getById(id, collectionName, callback, error = undefined) {
+        MongoClient.connect(url, (err, client) => {
+            if (err) throw err
+            var dbo = client.db(this.db_name)
+            var object_id = new mongo.ObjectID(id)
+            dbo.collection(collectionName).findOne({ '_id': object_id }, (err, result) => {
+                if (err && errror == undefined)
+                    throw err
+                else if (err)
                     error(err.message)
                 else
                     callback(result)

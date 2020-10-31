@@ -87,6 +87,10 @@ module.exports = class PlansControl extends DatabaseHelper {
         return moment(date, "YYYY-M-D h:m", true).isValid()
     }
 
+    getByPlanId(planId, callback, error) {
+        this.getById(planId, 'plans', callback, error)
+    }
+
     getPlans(uid, limit = 10, skip = 0) {
         this.Client.connect(err => {
             if (err) {
